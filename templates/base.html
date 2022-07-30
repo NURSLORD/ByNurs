@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Basic -->
+{% load static %}
+{% load main_tag %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Site Metas -->
+    {% if title %}
+        <title> {{ title }}</title>
+    {% else %}
+        <title>By Nurs</title>
+    {% endif %}
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<!-- Start Main Top -->
+<div class="main-top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="text-slid-box">
+                    <div id="offer-box" class="carouselTicker">
+                        <ul class="offer-box">
+                            {% for sell in sells %}
+                                <li>
+                                    <i class="fab fa-opencart"></i> {{ sell.title }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="custom-select-box">
+                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+                        <option>¥ JPY</option>
+                        <option>$ USD</option>
+                        <option>€ EUR</option>
+                    </select>
+                </div>
+                <div class="right-phone-box">
+                    {% for add in address %}
+
+                        <p>Позвоните нам :- <a href="tel:{{ add.phone_number }}">{{ add.phone_number }}</a></p>
+                    {% endfor %}
+                </div>
+                <div class="our-link">
+                    <ul>
+                        <li><a href="{% url 'account' %}">My Account</a></li>
+                        <li>
+                            <a href="https://www.google.com/maps/place/Silk+road+Lodge/@42.8801412,74.5940494,3a,75y,90t/data=!3m8!1e2!3m6!1shttps:%2F%2Fcdn.ostrovok.ru%2Ft%2F1024x768%2Fextranet%2Fmedia%2F6daebca4679641bcb17d85af859de220.JPG!2e7!3e27!6s%2F%2Flh6.googleusercontent.com%2Fproxy%2FBPjnD3ogM4YdwePZUbgs_o-wpFavg0CXiroF2HpsQ9Y04bHVCAXTjpRtN41fwgX8Tu11SWGTykRFPU_g-d7SBSolw_HZuT5iIdcVZ_JrBoAK5HivYSfltPJcok8ZcJwSESbbnIA_rgCYU-JclygdrJvYMp1Y5MY%3Dw203-h152-k-no!7i1024!8i768!4m8!3m7!1s0x389eb7e1cd3ce999:0xd2f0edec6dc7edef!5m2!4m1!1i2!8m2!3d42.8803005!4d74.5940618">Our
+                                location</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Main Top -->
+
+<!-- Start Main Top -->
+<header class="main-header">
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav">
+        <div class="container">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu"
+                        aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand logo-nurs"
+                   href="{% url 'home' %}">
+                    🛒// BY NURS
+                </a>
+            </div>
+            <!-- End Header Navigation -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+                <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
+                    <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    <li class="dropdown megamenu-fw">
+                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Product</a>
+                        <ul class="dropdown-menu megamenu-content" role="menu">
+                            <li>
+                                <div class="row">
+                                    {% for cat in cats %}
+                                        <div class="col-menu col-md-3">
+                                            <h6 class="title">{{ cat.title }}</h6>
+                                            <div class="content">
+                                                <ul class="menu-col">
+                                                    {% for s in cat.my_catis.all %}
+                                                        <li><a href="{% url 'shop' s.pk %}">{{ s.title }}</a></li>
+                                                    {% endfor %}
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'cart' %}">Cart</a></li>
+                            <li><a href="{% url 'checkout' %}">Checkout</a></li>
+                            <li><a href="{% url 'account' %}">My Account</a></li>
+                            <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'service' %}">Our Service</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+            <!-- Start Atribute Navigation -->
+            <div class="attr-nav">
+                <ul>
+                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li class="side-menu"><a href="#">
+                        <i class="fa fa-shopping-bag"></i>
+                        {% if user.is_authenticated %}
+                            <span class="badge">{% counter_cart user.username %}</span>
+                        {% else %}
+                            <span class="badge"></span>
+                        {% endif %}
+                    </a></li>
+                </ul>
+            </div>
+            <!-- End Atribute Navigation -->
+            {% if not user.is_authenticated %}
+                <ul class="nav">
+                    <li class="nav-item"><a href="{% url 'my_login' %}" class="nav-link link-dark px-2">Login</a></li>
+                    <li class="nav-item"><a href="{% url 'my_register' %}" class="nav-link link-dark px-2">Sign up</a>
+                    </li>
+                </ul>
+            {% else %}
+                <a href="{% url 'my_login' %}"
+                   style="display: flex;align-items: center;color: black;text-decoration: none;margin-left: 16px;font-weight: bold;">
+                    {{ user.username }}
+                    <div style="width: 25px; height: 25px;border-radius: 50%;overflow: hidden;margin-left: 12px;">
+                        <img style="width: 100%;height: 100%;object-fit: cover"
+                             src="{% static 'images/photo.jpg' %}"
+                             alt="">
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+        <!-- Start Side Menu -->
+        {% if user.is_authenticated %}
+            {% cart_all user.username %}
+        {% endif %}
+        <!-- End Side Menu -->
+    </nav>
+    <!-- End Navigation -->
+</header>
+<!-- End Main Top -->
+
+<!-- Start Top Search -->
+<div class="top-search">
+    <div class="container">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <form action="" method="post">
+                <input type="text" name="main_search" class="form-control" placeholder="Search">
+                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Top Search -->
+
+
+{% block content %}
+
+
+{% endblock %}
+<!-- Start Instagram Feed  -->
+<div class="instagram-box">
+    <div class="main-instagram owl-carousel owl-theme">
+        {% for b in brand %}
+            <div class="item">
+                <div class="ins-inner-box">
+                    <img src="{{ b.image.url }}" alt=""/>
+                    <div class="hov-in">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+<!-- End Instagram Feed  -->
+
+
+<!-- Start Footer  -->
+<footer>
+    <div class="footer-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="footer-widget">
+                        <h4>About ThewayShop</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat.
+                        </p>
+                        <ul>
+                            <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
+                            <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="footer-link">
+                        <h4>Information</h4>
+                        <ul>
+                            <li><a href="{% url 'about' %}">About Us</a></li>
+                            <li><a href="{% url 'service' %}">Customer Service</a></li>
+                            <li><a href="#">Our Sitemap</a></li>
+                            <li><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Delivery Information</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="footer-link-contact">
+                        <h4>Контакт</h4>
+                        {% for add in address %}
+                            <ul>
+                                <li>
+                                    <p><i class="fas fa-map-marker-alt"></i>Адрес: {{ add.title }} </p>
+                                </li>
+                                <li>
+                                    <p><i class="fas fa-phone-square"></i>Тел: <a
+                                            href="tel:{{ add.phone_number }}">{{ add.phone_number }}</a></p>
+                                </li>
+                                <li>
+                                    <p><i class="fas fa-envelope"></i>Эл.Адрес: <a
+                                            href="mailto:{{ add.email }}">{{ add.email }}</a></p>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .logo-nurs {
+        font-weight: bold;
+        font-size: 36px;
+        font-style: italic;
+        color: #d33b33 !important;
+    }
+</style>
+
+<!-- End Footer  -->
+
+<!-- Start copyright  -->
+<div class="footer-copyright">
+    <p class="footer-company">Все права защищены. &copy; 2022 <a href="#">ByNurs</a> Сделано:
+        <a href="https://www.instagram.com/thnurs27/">Nursultan</a></p>
+</div>
+<!-- End copyright  -->
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+
+<!-- ALL JS FILES -->
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- ALL PLUGINS -->
+<script src="{% static 'js/jquery.superslides.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.js' %}"></script>
+<script src="{% static 'js/inewsticker.js' %}"></script>
+<script src="{% static 'js/bootsnav.js' %}"></script>
+<script src="{% static 'js/images-loded.min.js' %}"></script>
+<script src="{% static 'js/isotope.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/baguetteBox.min.js' %}"></script>
+<script src="{% static 'js/form-validator.min.js' %}"></script>
+<script src="{% static 'js/contact-form-script.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+</body>
+
+</html>

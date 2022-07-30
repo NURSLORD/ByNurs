@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>ABOUT US</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active">ABOUT US</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start About Page  -->
+    <div class="about-box-main">
+        <div class="container">
+            <div class="row">
+                 {% for about in abouts %}
+                {% if about.is_active%}
+                <div class="col-lg-6">
+                    <h2 class="noo-sh-title"><span>{{ about.title }}</span></h2>
+                    <p>{{ about.description }}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="col-lg-6">
+                    <div class="banner-frame"><img class="img-thumbnail img-fluid"
+                                                   src="{% static 'images/about-img.jpg' %}" alt=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-5">
+                {% for about in abouts %}
+                {% if about.is_active == False %}
+                <div class="col-sm-6 col-lg-4">
+                    <div class="service-block-inner">
+                        <h3>{{ about.title }}</h3>
+                        <p>{{ about.description }} </p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+            </div>
+            <div class="row my-4">
+                <div class="col-12">
+                    <h2 class="noo-sh-title">Познакомьтесь с нашей командой</h2>
+                </div>
+                {% for t in teams %}
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="hover-team">
+                            <div style="height: 250px;" class="our-team"><img style="height: 100%;object-fit: cover" src="{{ t.image.url }}" alt=""/>
+                                <div class="team-content">
+                                    <h3 class="title">{{ t.name }}</h3> <span class="post">{{ t.position }}</span></div>
+                                <ul class="social">
+                                    <li>
+                                        <a href="{{ t.site }}" class="fab fa-facebook"></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ t.site }}" class="fab fa-twitter"></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ t.site }}" class="fab fa-google-plus"></a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ t.site }}" class="fab fa-instagram"></a>
+                                    </li>
+                                </ul>
+                                <div class="icon"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                            </div>
+                            <div class="team-description">
+                                <p>{{ t.description }} </p>
+                            </div>
+                            <hr class="my-0">
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    <!-- End About Page -->
+{% endblock %}

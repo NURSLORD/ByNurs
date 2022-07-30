@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Shop</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Shop</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Page  -->
+    <div class="shop-box-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
+                    <div class="product-categori">
+                        <div class="search-product">
+                            <form action="#" method="post">
+                                {% csrf_token %}
+                                <input class="form-control" name="find_product" placeholder="Search here..." type="text">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <div class="filter-sidebar-left">
+                            <div class="title-left">
+                                <h3>Categories</h3>
+                            </div>
+                            <div class="list-group list-group-collapse list-group-sm list-group-tree"
+                                 id="list-group-men" data-children=".sub-men">
+                                {% for cat in cats %}
+                                    <div class="list-group-collapse sub-men">
+                                        <a class="list-group-item list-group-item-action" href="#sub-men1"
+                                           data-toggle="collapse" aria-expanded="true"
+                                           aria-controls="sub-men1">{{ cat.title }}
+                                            <small class="text-muted">({{ cat.my_catis.all.count }})</small>
+                                        </a>
+                                        <div class="collapse show" id="sub-men1" data-parent="#list-group-men">
+                                            <div class="list-group">
+                                                {% for sub in cat.my_catis.all %}
+                                                    <a href="{% url 'shop' sub.pk %}"
+                                                       class="list-group-item list-group-item-action active">{{ sub.title }}
+                                                        <small class="text-muted">({{ sub.my_sub.all.count }})</small></a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="filter-price-left">
+                            <div class="title-left">
+                                <h3>Price</h3>
+                            </div>
+                            <div class="price-box-slider">
+                                <div id="slider-range"></div>
+                                <p>
+                                    <input type="text" id="amount" readonly
+                                           style="border:0; color:#fbb714; font-weight:bold;">
+                                    <button class="btn hvr-hover" type="submit">Filter</button>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="filter-brand-left">
+                            <div class="title-left">
+                                <h3>Brand</h3>
+                            </div>
+                            <div class="brand-box">
+                                <ul>
+                                    {% for b in brand %}
+                                        <li>
+                                            <div class="radio radio-danger">
+                                                <input name="survey" id="Radios1" value="Yes" type="radio">
+                                                <label for="Radios1"> {{ b.title }}</label>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
+                    <div class="right-product-box">
+                        <div class="product-item-filter row">
+                            <div class="col-12 col-sm-8 text-center text-sm-left">
+                                <div class="toolbar-sorter-right">
+                                    <span>Sort by </span>
+                                    <select id="basic" class="selectpicker show-tick form-control"
+                                            data-placeholder="$ USD">
+                                        <option data-display="Select">Nothing</option>
+                                        <option value="1">Popularity</option>
+                                        <option value="2">High Price → High Price</option>
+                                        <option value="3">Low Price → High Price</option>
+                                        <option value="4">Best Selling</option>
+                                    </select>
+                                </div>
+                                <p>Showing all 4 results</p>
+                            </div>
+                            <div class="col-12 col-sm-4 text-center text-sm-right">
+                                <ul class="nav nav-tabs ml-auto">
+                                    <li>
+                                        <a class="nav-link active" href="#grid-view" data-toggle="tab"> <i
+                                                class="fa fa-th"></i> </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="#list-view" data-toggle="tab"> <i
+                                                class="fa fa-list-ul"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row product-categorie-box">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
+                                    <div class="row">
+                                        {% for p in product %}
+                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="products-single fix">
+                                                    <div class="box-img-hover">
+                                                        <div class="type-lb">
+                                                            {% if p.status == 'new' %}
+                                                                <p class="new">New</p>
+                                                            {% elif p.status == 'sale' %}
+                                                                <p class="sale">Sale</p>
+                                                            {% elif p.status == 'popular' %}
+                                                                <p class="sale">Popular</p>
+                                                            {% endif %}
+
+                                                        </div>
+                                                        <img src="{{ p.image_main.url }}" class="img-fluid"
+                                                             alt="Image">
+                                                        <div class="mask-icon">
+                                                            <ul>
+                                                                <li><a href="{% url 'shop_detail' p.pk %}"
+                                                                       data-toggle="tooltip" data-placement="right"
+                                                                       title="View"><i class="fas fa-eye"></i></a></li>
+                                                                <li><a href="#" data-toggle="tooltip"
+                                                                       data-placement="right"
+                                                                       title="Compare"><i
+                                                                        class="fas fa-sync-alt"></i></a>
+                                                                </li>
+                                                                <li><a href="{% url 'wish_add' p.pk %}"
+                                                                       data-toggle="tooltip" data-placement="right"
+                                                                       title="Add to Wishlist"><i
+                                                                        class="far fa-heart"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                            <a class="cart" href="{% url 'cart_add' p.pk %}">Add to
+                                                                Cart</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="why-text">
+                                                        <h4>{{ p.title }}</h4>
+                                                        <h5> {{ p.old_price }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="list-view">
+                                    <div class="list-view-box">
+                                        <div class="row">
+                                            {% for pr in product %}
+                                                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                    <div class="products-single fix">
+                                                        <div class="box-img-hover">
+                                                            <div class="type-lb">
+                                                                {% if pr.status == 'new' %}
+                                                                    <p class="new">New</p>
+                                                                {% elif pr.status == 'sale' %}
+                                                                    <p class="sale">Sale</p>
+                                                                {% elif pr.status == 'popular' %}
+                                                                    <p class="sale">Popular</p>
+                                                                {% endif %}
+                                                            </div>
+                                                            <img src="{{ pr.image_main.url }}"
+                                                                 class="img-fluid" alt="Image">
+                                                            <div class="mask-icon">
+                                                                <ul>
+                                                                    <li><a href="{% url 'shop_detail' pr.pk %}"
+                                                                           data-toggle="tooltip"
+                                                                           data-placement="right" title="View"><i
+                                                                            class="fas fa-eye"></i></a></li>
+                                                                    <li><a href="#" data-toggle="tooltip"
+                                                                           data-placement="right" title="Compare"><i
+                                                                            class="fas fa-sync-alt"></i></a></li>
+                                                                    <li><a href="{% url 'wish_add' pr.pk %}"
+                                                                           data-toggle="tooltip"
+                                                                           data-placement="right"
+                                                                           title="Add to Wishlist"><i
+                                                                            class="far fa-heart"></i></a></li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                    <div class="why-text full-width">
+                                                        <h4>{{ pr.title }}</h4>
+                                                        <h5>
+                                                            {% if pr.status == 'sale' %}
+                                                                <del>$ {{ pr.old_price }}</del>
+                                                                ${{ pr.new_price }}
+                                                            {% else %}
+                                                                ${{ pr.old_price }}
+                                                            {% endif %}
+                                                        </h5>
+                                                        <p>{{ pr.description }}</p>
+                                                        <a class="btn hvr-hover" href="{% url 'cart_add' pr.pk %}">Add
+                                                            to Cart</a>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Shop Page -->
+{% endblock %}
+<style>
+    .container {
+
+    }
+
+    .category {
+        margin-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .category_product {
+        margin-top: 16px;
+        margin-right: 8px;
+        width: 23%;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category_product:last-child {
+        margin-right: 0;
+    }
+
+    .category_product-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .product-title {
+        position: absolute;
+        bottom: 30px;
+        text-align: center;
+        z-index: 4;
+        left: 0;
+        right: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+    }
+
+    .product-link {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        background: rgba(0, 0, 0, .4);
+    }
+</style>

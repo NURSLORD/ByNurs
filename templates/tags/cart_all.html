@@ -1,0 +1,20 @@
+<div class="side">
+    <a href="#" class="close-side"><i class="fa fa-times"></i></a>
+    <li class="cart-box">
+        <ul class="cart-list">
+            {% for cart in cart %}
+                <li>
+                    <a href="{% url 'shop_detail' cart.pk %}" class="photo"><img src="{{ cart.image_main.url }}"
+                                                                                 class="cart-thumb"
+                                                                                 alt=""/></a>
+                    <h6><a href="{% url 'shop_detail' cart.pk %}">{{ cart.title }} </a></h6>
+                    <p>1x - <span class="price">{{ cart.old_price }}</span></p>
+                </li>
+            {% endfor %}
+            <li class="total">
+                <a href="{% url 'cart' %}" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
+                <span class="float-right"><strong>Total</strong>: ${{ summa_carts }}</span>
+            </li>
+        </ul>
+    </li>
+</div>
