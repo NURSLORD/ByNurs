@@ -1,7 +1,8 @@
 from django.urls import path, include
 
 from customers.views import logout_my, set_login, set_register, set_edit, wishlist_add, wishlist_delete, cart_add, \
-    cart_delete, set_cart
+    cart_delete
+from shop.views import set_cart
 
 urlpatterns = [
     path('logout/', logout_my, name='logout_my'),

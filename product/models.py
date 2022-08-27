@@ -5,7 +5,6 @@ from smart_selects.db_fields import ChainedForeignKey
 # Create your models here.
 
 
-
 class Brand(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')
     description = models.TextField(verbose_name='Описание')
@@ -90,6 +89,7 @@ class Product(models.Model):
     cur = models.CharField(verbose_name='Волюта', choices=C_U_R, default='C', max_length=3)
     new_price = models.IntegerField(verbose_name='Новая цена', null=True, blank=True)
     pub_date = models.DateField(verbose_name='Дата публикации', auto_now_add=True, blank=True, null=True)
+
     def __str__(self):
         return f'{self.title}'
 

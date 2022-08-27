@@ -7,127 +7,239 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Cart</h2>
+                    <h2>Корзина</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Cart</li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
+                        <li class="breadcrumb-item active">Корзина</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <!-- End All Title Box -->
-
-    <!-- Start Cart  -->
-    <div class="cart-box-main">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="table-main table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Images</th>
-                                <th>Product Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Remove</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for cp in cart_products %}
+    <form action="{% url 'cart' %}" method="post">
+        {% csrf_token %}
+        <!-- Start Cart  -->
+        <div class="cart-box-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-main table-responsive">
+                            <table class="table">
+                                <thead>
                                 <tr>
-                                    <td class="thumbnail-img">
-                                        <a href="{% url 'shop_detail' cp.pk %}">
-                                            <img class="img-fluid" src="{{ cp.image_main.url }}" alt=""/>
-                                        </a>
-                                    </td>
-                                    <td class="name-pr">
-                                        <a href="{% url 'shop_detail' cp.pk %}">
-                                            {{ cp.title }}
-                                        </a>
-                                    </td>
-                                    <td class="price-pr">
-                                        <p>$ {{ cp.old_price }}</p>
-                                    </td>
-                                        <td class="quantity-box"><input type="number" name="count" size="4" value="1" min="0"
-                                                                        step="1" class="c-input-text qty text"></td>
-                                    <td class="total-pr">
-                                        <p>$ {{ cp.old_price }}</p>
-                                    </td>
-                                    <td class="remove-pr">
-                                        <a href="{% url 'cart_delete' cp.pk %}">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                    </td>
+                                    <th>Фото</th>
+                                    <th>Название продукта</th>
+                                    <th>Цена</th>
+                                    <th>Количество</th>
+                                    <th>Итог</th>
+                                    <th>Удалить</th>
                                 </tr>
-                            {% endfor %}
+                                </thead>
+                                <tbody>
+                                {% for cp in cart_products %}
+                                    <tr>
+                                        <td class="thumbnail-img">
+                                            <a href="{% url 'shop_detail' cp.pk %}">
+                                                <img class="img-fluid" src="{{ cp.image_main.url }}" alt=""/>
+                                            </a>
+                                        </td>
+                                        <td class="name-pr">
+                                            <a href="{% url 'shop_detail' cp.pk %}">
+                                                {{ cp.title }}
+                                            </a>
+                                        </td>
+                                        <td class="price-pr">
+                                            {% if cp.status == 'sale' %}
+                                                <p> Со скидкой {{ cp.new_price }}{{ cp.cur }}</p>
+                                            {% else %}
+                                                <p>{{ cp.old_price }}{{ cp.cur }}</p>
 
-                            </tbody>
-                        </table>
+                                            {% endif %}
+                                        </td>
+                                        {% if cp.status == 'sale' %}
+                                            <td class="quantity-box"><input type="number"
+                                                                            onchange="calc(this.value, {{ cp.pk }}, {{ cp.new_price }})"
+                                                                            id="count{{ cp.pk }}" name="item{{ cp.pk }}"
+                                                                            size="4"
+                                                                            min="1"
+                                                                            step="1" class="c-input-text qty text"></td>
+                                        {% else %}
+                                            <td class="quantity-box"><input type="number"
+                                                                            onchange="calc(this.value, {{ cp.pk }}, {{ cp.old_price }})"
+                                                                            id="count{{ cp.pk }}" name="item{{ cp.pk }}"
+                                                                            size="4"
+                                                                            min="1"
+                                                                            step="1" class="c-input-text qty text"></td>
+
+                                        {% endif %}
+                                        <td class="total-pr">
+                                            <p id="total{{ cp.pk }}"></p>
+                                        </td>
+                                        <td class="remove-pr">
+                                            <a href="{% url 'cart_delete' cp.pk %}">
+                                                <i class="fas fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row my-5">
-                <div class="col-lg-6 col-sm-6">
-                    <div class="coupon-box">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code"
-                                   type="text">
-                            <div class="input-group-append">
-                                <button class="btn btn-theme" type="button">Apply Coupon</button>
+                <div class="row my-5">
+                    <div class="col-sm-6 col-lg-6 mb-3">
+                        <div class="checkout-address">
+                            <div class="title-left">
+                                <h3>Адрес для выставления счета</h3>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">Имя *</label>
+                                    <input type="text" name="first_name" class="form-control" id="firstName"
+                                           placeholder="" value="" required>
+                                    <div class="invalid-feedback"> Требуется действительное имя.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Фамилия *</label>
+                                    <input type="text" name="last_name" class="form-control" id="lastName"
+                                           placeholder="" value="" required>
+                                    <div class="invalid-feedback"> Требуется действующая фамилия.</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email">Адрес электронной почты *</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="">
+                                <div class="invalid-feedback"> Пожалуйста, введите действующий адрес электронной почты
+                                    для доставки
+                                    обновления.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address">Адрес *</label>
+                                <input type="text" class="form-control" name="address" id="address" placeholder=""
+                                       required>
+                                <div class="invalid-feedback"> Пожалуйста, введите адрес доставки.</div>
+                            </div>
+                            <hr class="mb-4">
+                            <div class="title"><span>Оплата</span></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-name">Имя на карте</label>
+                                    <input type="text" name="card_name" class="form-control" id="cc-name"
+                                           placeholder=""
+                                           required> <small class="text-muted">Полное имя, отображаемое на
+                                    открытка</small>
+                                    <div class="invalid-feedback"> Имя на карточке обязательно</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-number">Номер кредитной карты</label>
+                                    <input type="text" name="card_number" class="form-control" id="cc-number"
+                                           placeholder="" required>
+                                    <div class="invalid-feedback"> Требуется номер кредитной карты</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">Срок действия</label>
+                                    <input type="text" name="data" class="form-control" id="cc-expiration"
+                                           placeholder="" required>
+                                    <div class="invalid-feedback"> Требуется срок действия</div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">CVV</label>
+                                    <input type="text" name="pin" class="form-control" id="cc-cvv" placeholder=""
+                                           required>
+                                    <div class="invalid-feedback"> Требуется код безопасности</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="payment-icon">
+                                        <ul>
+                                            <li><img class="img-fluid"
+                                                     src="{% static 'images/payment-icon/1.png' %}"
+                                                     alt=""></li>
+                                            <li><img class="img-fluid"
+                                                     src="{% static 'images/payment-icon/2.png' %}"
+                                                     alt=""></li>
+                                            <li><img class="img-fluid"
+                                                     src="{% static 'images/payment-icon/3.png' %}"
+                                                     alt=""></li>
+                                            <li><img class="img-fluid"
+                                                     src="{% static 'images/payment-icon/5.png' %}"
+                                                     alt=""></li>
+                                            <li><img class="img-fluid"
+                                                     src="{% static 'images/payment-icon/7.png' %}"
+                                                     alt=""></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-1">
+                            <div class="submit-button text-center">
+                                <button class="btn hvr-hover" id="submit" type="submit">Оформить</button>
+                                <div id="msgSubmit" class="h3 text-center hidden"></div>
+                                <div class="clearfix"></div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-sm-6">
-                    <div class="update-box">
-                        <input value="Update Cart" type="submit">
+
+
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="order-box">
+                            <h3>Итог заказа</h3>
+                            <div class="d-flex">
+                                <h4>Итоги</h4>
+                                <div class="ml-auto font-weight-bold">
+                                    <input name="total_price"
+                                           type="text"
+                                           readonly
+                                           id="all_total"
+                                           style="border: none;float: right;width: 100px"
+                                    />
+                                </div>
+                            </div>
+
+                            <hr class="my-1">
+
+                            <div class="d-flex">
+                                <h4>Налог</h4>
+                                <div class="ml-auto font-weight-bold"> 20 Сом</div>
+                            </div>
+                            <div class="d-flex">
+                                <h4>Стоимость доставки</h4>
+                                <div class="ml-auto font-weight-bold"> Бесплатно</div>
+                            </div>
+                            <hr>
+                            <div class="d-flex gr-total">
+                                <h5>Общий итог</h5>
+                                <div i class="ml-auto h5" id="all_total_1"></div>
+                            </div>
+                            <hr>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row my-5">
-                <div class="col-lg-8 col-sm-12"></div>
-                <div class="col-lg-4 col-sm-12">
-                    <div class="order-box">
-                        <h3>Order summary</h3>
-                        <div class="d-flex">
-                            <h4>Sub Total</h4>
-                            <div class="ml-auto font-weight-bold"> {{ summa_products }}</div>
-                        </div>
-                        <div class="d-flex">
-                            <h4>Discount</h4>
-                            <div class="ml-auto font-weight-bold"> $ 40</div>
-                        </div>
-                        <hr class="my-1">
-                        <div class="d-flex">
-                            <h4>Coupon Discount</h4>
-                            <div class="ml-auto font-weight-bold"> $ 10</div>
-                        </div>
-                        <div class="d-flex">
-                            <h4>Tax</h4>
-                            <div class="ml-auto font-weight-bold"> $ 2</div>
-                        </div>
-                        <div class="d-flex">
-                            <h4>Shipping Cost</h4>
-                            <div class="ml-auto font-weight-bold"> Free</div>
-                        </div>
-                        <hr>
-                        <div class="d-flex gr-total">
-                            <h5>Grand Total</h5>
-                            <div class="ml-auto h5"> $ {{ summa_products }}</div>
-                        </div>
-                        <hr>
-                    </div>
-                </div>
-                <div class="col-12 d-flex shopping-box"><a href="{% url 'checkout' %}" class="ml-auto btn hvr-hover">Checkout</a>
-                </div>
-            </div>
-
         </div>
-    </div>
+    </form>
+
+    <script>
+        function calc(counter, id, price) {
+            let c = document.getElementById('count' + id).value;
+            document.getElementById('total' + id).innerHTML = parseInt(c) * price;
+            let all_total = 0
+            {% for i in cart_products %}
+                all_total += parseInt(document.getElementById('total' + {{i.id}}).innerHTML)
+            {% endfor %}
+            document.getElementById('all_total').value = all_total;
+            document.getElementById('all_total_1').innerHTML = all_total + 20;
+        }
+
+
+    </script>
     <!-- End Cart -->
 {% endblock %}
+

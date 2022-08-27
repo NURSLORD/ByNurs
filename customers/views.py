@@ -19,13 +19,14 @@ def set_login(request):
             # messages.success(request, 'You are successfully logged in!')
             return redirect('my_register')
         else:
-            messages.success(request, 'You are not logged in!')
+            messages.success(request, 'Вы не авторизованы!')
             return redirect('my_login')
     context = {
+        'title': 'Войти',
         'cats': Category.objects.all(),
         "brand": Brand.objects.all().filter(is_active=True),
         'sells': Sell.objects.all().filter(is_active=True),
-        'address': Address.objects.all().filter(is_active=True)
+        'address': Address.objects.all().filter(is_active=True),
     }
 
     return render(request, 'user/login.html', context)
@@ -37,22 +38,29 @@ def set_register(request):
         email = request.POST["email"]
         password = request.POST["password"]
         password2 = request.POST["password2"]
+        full_name = request.POST["first_name"]
+        phone = request.POST["phone"]
         if password != password2:
-            messages.error(request, 'Passwords are not correct!')
+            messages.error(request, 'Пароли не правильные!')
             return redirect('my_register')
         user = User()
         user.username = username
         user.email = email
-        MyUser.objects.create(username=username, email=email)
+        user.password = password
+        MyUser.objects.create(username=username, email=email, full_name=full_name, phone_number=phone)
         user.set_password(password)
         user.save()
-        messages.success(request, 'you are in the site')
-        return redirect('my_register')
+        user1 = authenticate(username=username, password=password)
+        if user1 is not None:
+            login(request, user1)
+        messages.success(request, 'Вы на сайте')
+        return redirect('home')
     context = {
+        'title': 'Регистация',
         'cats': Category.objects.all(),
         "brand": Brand.objects.all().filter(is_active=True),
         'sells': Sell.objects.all().filter(is_active=True),
-        'address': Address.objects.all().filter(is_active=True)
+        'address': Address.objects.all().filter(is_active=True),
     }
     return render(request, "user/register.html", context)
 
@@ -64,7 +72,30 @@ def logout_my(request):
 
 
 def set_edit(request):
-    return render(request, 'user/edit.html')
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            image = request.FILES['image']
+            full_name = request.POST['full_name']
+            phone = request.POST['number_phone']
+            email = request.POST['email']
+            user = MyUser.objects.get(username=request.user.username)
+            user.image = image
+            user.email = email
+            user.phone_number = phone
+            user.full_name = full_name
+            user.save()
+        context = {
+            'title': 'Редактировать',
+            'cats': Category.objects.all(),
+            "brand": Brand.objects.all().filter(is_active=True),
+            'sells': Sell.objects.all().filter(is_active=True),
+            'address': Address.objects.all().filter(is_active=True),
+            'customer': MyUser.objects.get(username=request.user.username)
+
+        }
+        return render(request, 'user/edit.html', context=context)
+    else:
+        return redirect('my_login')
 
 
 def wishlist_add(request, pk):
@@ -77,7 +108,7 @@ def wishlist_add(request, pk):
         return redirect('my_login')
 
     context = {
-        'title': 'Wishlist',
+        'title': 'Избранные',
         'wishlist': user.wishlist.all(),
         'cats': Category.objects.all(),
         "brand": Brand.objects.all().filter(is_active=True),
@@ -96,7 +127,7 @@ def wishlist_delete(request, pk):
     else:
         return redirect('my_login')
     context = {
-        'title': 'Wishlist',
+        'title': 'Избранные',
         'wishlist': user.wishlist.all(),
         'cats': Category.objects.all(),
         "brand": Brand.objects.all().filter(is_active=True),
@@ -112,25 +143,10 @@ def cart_add(request, pk):
         product = Product.objects.get(pk=pk)
         user.cart.add(product)
         user.wishlist.remove(product)
+        id = product.sub_category.pk
+        return redirect('shop', pk=id)
     else:
         return redirect('my_login')
-
-    user = MyUser.objects.get(username=request.user.username)
-    wishlist_delete(request, pk)
-    # context = {
-    #     'title': 'Корзина',
-    #     'count_cart': user.cart.count(),
-    #     'cart_products': user.cart.all(),
-    #     'summa_cart': sum([i.old_price for i in user.cart.all()]),
-    #     'summa_products': sum([i.old_price for i in user.cart.all()]),
-    #     'cats': Category.objects.all(),
-    #     "brand": Brand.objects.all().filter(is_active=True),
-    #     'sells': Sell.objects.all().filter(is_active=True),
-    #     'address': Address.objects.all().filter(is_active=True)
-    #
-    # }
-
-    return redirect('shop_detail', pk=pk)
 
 
 def cart_delete(request, pk):
@@ -140,6 +156,7 @@ def cart_delete(request, pk):
         user.cart.remove(product)
     else:
         return redirect('my_login')
+    user = MyUser.objects.get(username=request.user.username)
     context = {
         'title': 'Корзина',
         'count_cart': user.cart.count(),
@@ -158,33 +175,10 @@ def cart_delete(request, pk):
 
 def set_wishlist(request):
     context = {
-        'title': 'Избранное',
+        'title': 'Избранные',
         'cats': Category.objects.all(),
         "brand": Brand.objects.all().filter(is_active=True),
         'sells': Sell.objects.all().filter(is_active=True),
         'address': Address.objects.all().filter(is_active=True)
     }
     return render(request, 'wishlist.html', context)
-
-
-def set_cart(request):
-    if request.user.is_authenticated:
-        user = MyUser.objects.get(username=request.user.username)
-        context = {
-            'title': 'Корзина',
-            'cart_products': user.cart.all(),
-            'cats': Category.objects.all(),
-            "brand": Brand.objects.all().filter(is_active=True),
-            'sells': Sell.objects.all().filter(is_active=True),
-            'address': Address.objects.all().filter(is_active=True)
-        }
-    else:
-        context = {
-            'title': 'Корзина',
-            'cats': Category.objects.all(),
-            "brand": Brand.objects.all().filter(is_active=True),
-            'sells': Sell.objects.all().filter(is_active=True),
-            'address': Address.objects.all().filter(is_active=True)
-
-        }
-    return render(request, "cart.html", context)

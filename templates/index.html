@@ -13,7 +13,7 @@
                                 <div class="col-md-12">
                                     <h1 class="m-b-20"><strong>By Nurs<br> {{ rec.title }}</strong></h1>
                                     <p class="m-b-40">{{ rec.description }}</p>
-                                    <p><a class="btn hvr-hover" href="#">News-Sells</a></p>
+                                    <p><a class="btn hvr-hover" href="{% url 'blog' %}">Новости/Блоги</a></p>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                                 <div class="col-md-12">
                                     <h1 class="m-b-20"><strong>By Nurs<br> {{ rec.title }}</strong></h1>
                                     <p class="m-b-40">{{ rec.description }}</p>
-                                    <p><a class="btn hvr-hover" href="#">News-Sells</a></p>
+                                    <p><a class="btn hvr-hover" href="{% url 'blog' %}">Новости/Блоги</a></p>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +71,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="title-all text-center">
-                        <h1>Popular Products</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p>
+                        <h1>Популярные продукты</h1>
+                        <p>Вы сможете посмотреть популярные продукты за последнее время</p>
                     </div>
                 </div>
             </div>
@@ -80,9 +80,9 @@
                 <div class="col-lg-12">
                     <div class="special-menu text-center">
                         <div class="button-group filter-button-group">
-                            <button class="active" data-filter="*">All</button>
-                            <button data-filter=".top-featured">Top featured</button>
-                            <button data-filter=".best-seller">Best seller</button>
+                            <button class="active" data-filter="*">Все</button>
+                            <button data-filter=".top-featured">Популярные</button>
+                            <button data-filter=".best-seller">Скидки</button>
                         </div>
                     </div>
                 </div>
@@ -95,26 +95,27 @@
                             <div class="products-single fix">
                                 <div class="box-img-hover">
                                     <div class="type-lb">
-                                        <p class="sale">Sale</p>
+                                        <p class="sale">Скидка</p>
                                     </div>
                                     <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
                                     <div class="mask-icon">
                                         <ul>
                                             <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip"
-                                                   data-placement="right" title="View"><i
+                                                   data-placement="right" title="Посмотреть"><i
                                                     class="fas fa-eye"></i></a></li>
                                             <li><a href="#" data-toggle="tooltip" data-placement="right"
-                                                   title="Compare"><i
+                                                   title="Обновить"><i
                                                     class="fas fa-sync-alt"></i></a></li>
-                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip" data-placement="right"
-                                                   title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right"
+                                                   title="Добавить в избранные"><i class="far fa-heart"></i></a></li>
                                         </ul>
-                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Add to Cart</a>
+                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Добавить в корзину</a>
                                     </div>
                                 </div>
                                 <div class="why-text">
                                     <h4>{{ product.title }}</h4>
-                                    <h5> ${{ product.old_price }}</h5>
+                                    <h5 style="color: red"> >{{ product.new_price }}{{ product.cur }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -124,79 +125,87 @@
                             <div class="products-single fix">
                                 <div class="box-img-hover">
                                     <div class="type-lb">
-                                        <p class="new">New</p>
+                                        <p class="new">Новинка</p>
                                     </div>
                                     <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
                                     <div class="mask-icon">
                                         <ul>
-                                            <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip" data-placement="right" title="View"><i
+                                            <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right" title="Посмотреть"><i
                                                     class="fas fa-eye"></i></a></li>
                                             <li><a href="#" data-toggle="tooltip" data-placement="right"
-                                                   title="Compare"><i
+                                                   title="Обновить"><i
                                                     class="fas fa-sync-alt"></i></a></li>
-                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip" data-placement="right"
-                                                   title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
+                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right"
+                                                   title="Добавить в избранные"><i class="far fa-heart"></i></a></li>
                                         </ul>
-                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Add to Cart</a>
+                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Добавить в корзину</a>
                                     </div>
                                 </div>
                                 <div class="why-text">
                                     <h4>{{ product.title }}</h4>
-                                    <h5> ${{ product.old_price }}</h5>
+                                    <h5 style="color: blue">> {{ product.old_price }}{{ product.cur }}</h5>
                                 </div>
                             </div>
                         </div>
                     {% endif %}
                     {% if product.status == 'just' %}
-                    <div class="col-lg-3 col-md-6 special-grid">
-                        <div class="products-single fix">
-                            <div class="box-img-hover">
-                                <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
-                                <div class="mask-icon">
-                                    <ul>
-                                        <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip" data-placement="right" title="View"><i
-                                                class="fas fa-eye"></i></a></li>
-                                        <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i
-                                                class="fas fa-sync-alt"></i></a></li>
-                                        <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip" data-placement="right"
-                                               title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                    </ul>
-                                    <a class="cart" href="{% url 'cart_add' product.pk %}">Add to Cart</a>
+                        <div class="col-lg-3 col-md-6 special-grid">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <ul>
+                                            <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right" title="Посмотреть"><i
+                                                    class="fas fa-eye"></i></a></li>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right"
+                                                   title="Обновить"><i
+                                                    class="fas fa-sync-alt"></i></a></li>
+                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right"
+                                                   title="Добавить в избранные"><i class="far fa-heart"></i></a></li>
+                                        </ul>
+                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Добавить в корзину</a>
+                                    </div>
+                                </div>
+                                <div class="why-text">
+                                    <h4>{{ product.title }}</h4>
+                                    <h5 style="color: blue"> >{{ product.old_price }}{{ product.cur }}</h5>
                                 </div>
                             </div>
-                            <div class="why-text">
-                                <h4>{{ product.title }}</h4>
-                                <h5> ${{ product.old_price }}</h5>
-                            </div>
                         </div>
-                    </div>
                     {% endif %}
                     {% if product.status == 'popular' %}
-                    <div class="col-lg-3 col-md-6 special-grid top-featured">
-                        <div class="products-single fix">
-                            <div class="box-img-hover">
-                                <div class="type-lb">
-                                    <p class="sale">Popular</p>
+                        <div class="col-lg-3 col-md-6 special-grid top-featured">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <div class="type-lb">
+                                        <p class="sale">Популярный</p>
+                                    </div>
+                                    <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
+                                    <div class="mask-icon">
+                                        <ul>
+                                            <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right" title="Посмотреть"><i
+                                                    class="fas fa-eye"></i></a></li>
+                                            <li><a href="#" data-toggle="tooltip" data-placement="right"
+                                                   title="Обновить"><i
+                                                    class="fas fa-sync-alt"></i></a></li>
+                                            <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip"
+                                                   data-placement="right"
+                                                   title="Добавить в избранные"><i class="far fa-heart"></i></a></li>
+                                        </ul>
+                                        <a class="cart" href="{% url 'cart_add' product.pk %}">Добавить в корзину</a>
+                                    </div>
                                 </div>
-                                <img src="{{ product.image_main.url }}" class="img-fluid" alt="Image">
-                                <div class="mask-icon">
-                                    <ul>
-                                        <li><a href="{% url 'shop_detail' product.pk %}" data-toggle="tooltip" data-placement="right" title="View"><i
-                                                class="fas fa-eye"></i></a></li>
-                                        <li><a href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i
-                                                class="fas fa-sync-alt"></i></a></li>
-                                        <li><a href="{% url 'wish_add' product.pk %}" data-toggle="tooltip" data-placement="right"
-                                               title="Add to Wishlist"><i class="far fa-heart"></i></a></li>
-                                    </ul>
-                                    <a class="cart" href="{% url 'cart_add' product.pk %}">Add to Cart</a>
+                                <div class="why-text">
+                                    <h4>{{ product.title }}</h4>
+                                    <h5 style="color: blue"> >{{ product.old_price }}{{ product.cur }}</h5>
                                 </div>
-                            </div>
-                            <div class="why-text">
-                                <h4>{{ product.title }}</h4>
-                                <h5> ${{ product.old_price }}</h5>
                             </div>
                         </div>
-                    </div>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -210,84 +219,54 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="title-all text-center">
-                        <h1>latest blog</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p>
+                        <h1>Последний блог</h1>
+                        <p>Интересные материалы для покупателей сети мультибрендовых магазинов ByNurs</p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="blog-box">
-                        <div class="blog-img">
-                            <img class="img-fluid" src="{% static 'images/blog-img.jpg' %}" alt=""/>
-                        </div>
-                        <div class="blog-content">
-                            <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet
-                                    urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed
-                                    mollis. Praesent laoreet lacinia elit id lobortis.</p>
+                {% for blog in blog %}
+                    <div class="col-md-6 col-lg-4 col-xl-4">
+                        <div class="blog-box">
+                            <div class="blog-img">
+                                <img class="img-fluid" src="{{ blog.image.url }}" alt="" style="height: 360px;"/>
                             </div>
-                            <ul class="option-blog">
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i
-                                        class="far fa-heart"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Views"><i
-                                        class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Comments"><i
-                                        class="far fa-comments"></i></a></li>
-                            </ul>
+                            <div class="blog-content">
+                                <div class="title-blog">
+                                    <h3>{{ blog.title }}</h3>
+                                    <p style="width: 290px;height: 180px;overflow: auto;font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.7);
+        margin-top: 0;">{{ blog.description }}</p>
+                                </div>
+                                <ul class="option-blog">
+                                    <li><a href="{% url 'blog_detail' blog.pk %}" data-toggle="tooltip"
+                                           data-placement="right" title="Посмотреть"><i
+                                            class="fas fa-eye"></i></a></li>
+                                    <li><a href="{% url 'blog_detail' blog.pk %}" data-toggle="tooltip"
+                                           data-placement="right" title="Комментарии"><i
+                                            class="far fa-comments"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="blog-box">
-                        <div class="blog-img">
-                            <img class="img-fluid" src="{% static 'images/blog-img-01.jpg' %}" alt=""/>
-                        </div>
-                        <div class="blog-content">
-                            <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet
-                                    urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed
-                                    mollis. Praesent laoreet lacinia elit id lobortis.</p>
-                            </div>
-                            <ul class="option-blog">
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i
-                                        class="far fa-heart"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Views"><i
-                                        class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Comments"><i
-                                        class="far fa-comments"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 col-xl-4">
-                    <div class="blog-box">
-                        <div class="blog-img">
-                            <img class="img-fluid" src="{% static 'images/blog-img-02.jpg' %}" alt=""/>
-                        </div>
-                        <div class="blog-content">
-                            <div class="title-blog">
-                                <h3>Fusce in augue non nisi fringilla</h3>
-                                <p>Nulla ut urna egestas, porta libero id, suscipit orci. Quisque in lectus sit amet
-                                    urna dignissim feugiat. Mauris molestie egestas pharetra. Ut finibus cursus nunc sed
-                                    mollis. Praesent laoreet lacinia elit id lobortis.</p>
-                            </div>
-                            <ul class="option-blog">
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Likes"><i
-                                        class="far fa-heart"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Views"><i
-                                        class="fas fa-eye"></i></a></li>
-                                <li><a href="#" data-toggle="tooltip" data-placement="right" title="Comments"><i
-                                        class="far fa-comments"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
     <!-- End Blog  -->
 {% endblock %}
-
+<style>.about {
+    width: 190px;
+    height: 80px;
+    overflow: auto;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+    margin-top: 0;
+}
+</style>

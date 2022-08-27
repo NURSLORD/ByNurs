@@ -1,7 +1,9 @@
 from django.db import models
 
-
 # Create your models here.
+from customers.models import MyUser
+
+
 class Sell(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название', help_text='30%-70% скидка на все')
     is_active = models.BooleanField(verbose_name='На главную', default=False)
@@ -95,4 +97,37 @@ class Contact(models.Model):
     class Meta:
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100, verbose_name='Название')
+    image = models.ImageField(upload_to='Blog/%Y/%m/%d', verbose_name='Фото')
+    description = models.TextField(verbose_name='Текст')
+    like = models.PositiveIntegerField(verbose_name='Лайк', blank=True, null=True)
+    is_pub = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(MyUser, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'Блог'
+        verbose_name_plural = 'Блоги'
+
+
+class Comment(models.Model):
+    blog = models.ForeignKey(to=Blog, on_delete=models.CASCADE, related_name='blog', verbose_name='Блог')
+    owner = models.ForeignKey(to=MyUser, on_delete=models.CASCADE, related_name='owner', verbose_name='пользователь')
+    text = models.TextField(verbose_name='Текст')
+
+    def __str__(self):
+        return f'{self.blog}'
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+
+
+
 

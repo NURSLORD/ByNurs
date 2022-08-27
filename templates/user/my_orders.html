@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for order in orders %}
+        <div class="container-fluid mt-5 my-5  d-flex  justify-content-center">
+            <div class="card card-1">
+                <div class="card-body">
+                    <div class="row justify-content-between mb-3">
+                        <div class="col-auto"><h6 class="color-1 mb-0 change-color">Чек {{ order.invoice_number }}</h6></div>
+                        <div class="col-auto  "><small>Дата получения : {{ order.ord_date }}</small></div>
+                    </div>
+                    {% for o in order.orders.all %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="card card-2">
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="sq align-self-center "><img
+                                                class="img-fluid  my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0"
+                                                src="{{ o.product.image_main.url }}" width="135" height="135"/></div>
+                                        <div class="media-body my-auto text-right">
+                                            <div class="row  my-auto flex-column flex-md-row">
+                                                <div class="col my-auto"><h6 class="mb-0"> {{ o.product.title }}</h6></div>
+                                                <div class="col-auto my-auto"><small></small></div>
+                                                <div class="col my-auto"><small>Артикл: {{ o.product.article }}</small></div>
+                                                <div class="col my-auto"><small>Количество: {{ o.quantity }}</small></div>
+                                                <div class="col my-auto"><h6 class="mb-0"> Цена: {{ o.price }} {{ o.product.cur }}
+                                                Скидка: {{ o.discount }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-3 ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="row justify-content-between">
+                                <div class="col-auto"><p class="mb-1 text-dark"><b>Информация для заказа</b></p></div>
+                                <div class="flex-sm-col text-right col"><p class="mb-1"><b>Итоговая цена</b></p></div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">{{ order.total_item }} Сом</p></div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="flex-sm-col text-right col"><p class="mb-1"><b>Скидка</b></p></div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">{{ order.discount }} Сом</p></div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="flex-sm-col text-right col"><p class="mb-1"><b>Плата за доставку</b></p>
+                                </div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">Бесплатный</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row invoice ">
+                        <div class="col"><p class="mb-1"> Номер счета : {{ order.invoice_number }}</p>
+                            <p class="mb-1">Дата счета : {{ order.ord_date }}</p>
+                            <p class="mb-1">Адрес: {{ order.address }}</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <style>
+        body {
+            min-height: 100vh;
+            background-size: cover;
+            font-family: 'Lato', sans-serif;
+            color: rgba(116, 116, 116, 0.667);
+
+        }
+
+        .container-fluid {
+            margin-top: 200px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 7px;
+
+        }
+
+        .small {
+            letter-spacing: 0.5px !important;
+        }
+
+        .card-1 {
+            box-shadow: 2px 2px 10px 0px rgb(190, 108, 170);
+            width: 90%;
+        }
+
+        hr {
+            background-color: rgba(248, 248, 248, 0.667);
+        }
+
+
+        .bold {
+            font-weight: 500;
+        }
+
+        .change-color {
+            color: #AB47BC !important;
+        }
+
+        .card-2 {
+            box-shadow: 1px 1px 3px 0px rgb(112, 115, 139);
+
+        }
+
+        .fa-circle.active {
+            font-size: 8px;
+            color: #AB47BC;
+        }
+
+        .fa-circle {
+            font-size: 8px;
+            color: #aaa;
+        }
+
+        .rounded {
+            border-radius: 2.25rem !important;
+        }
+
+
+        .progress-bar {
+            background-color: #AB47BC !important;
+        }
+
+
+        .progress {
+            height: 5px !important;
+            margin-bottom: 0;
+        }
+
+        .invoice {
+            position: relative;
+            top: -70px;
+        }
+
+        .Glasses {
+            position: relative;
+            top: -12px !important;
+        }
+
+        .card-footer {
+            background-color: #AB47BC;
+            color: #fff;
+        }
+
+        h2 {
+            color: rgb(78, 0, 92);
+            letter-spacing: 2px !important;
+        }
+
+        .display-3 {
+            font-weight: 500 !important;
+        }
+
+        @media (max-width: 479px) {
+            .invoice {
+                position: relative;
+                top: 7px;
+            }
+
+            .border-line {
+                border-right: 0px solid rgb(226, 206, 226) !important;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            h2 {
+                color: rgb(78, 0, 92);
+                font-size: 17px;
+            }
+
+            .display-3 {
+                font-size: 28px;
+                font-weight: 500 !important;
+            }
+        }
+
+        .card-footer small {
+            letter-spacing: 7px !important;
+            font-size: 12px;
+        }
+
+        .border-line {
+            border-right: 1px solid rgb(226, 206, 226)
+        }
+    </style>
+{% endblock %}

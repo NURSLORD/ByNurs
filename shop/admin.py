@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.db.models import QuerySet
 
-from shop.models import Sell, Reclame, Address, AboutUs, Team, Contact
+from shop.models import Sell, Reclame, Address, AboutUs, Team, Contact, Blog, Comment
 
 
 @admin.register(Sell)
@@ -62,3 +62,16 @@ class ContactAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display_links = ['name', 'email']
     search_fields = list_display
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ['title', 'is_pub']
+    list_display_links = ['title']
+    list_per_page = 20
+    save_on_top = True
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['blog', 'owner']
+    list_display_links = ['blog', 'owner']

@@ -7,10 +7,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Shop</h2>
+                    <h2>Каталог</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                        <li class="breadcrumb-item active">Shop</li>
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
+                        <li class="breadcrumb-item active">Каталог</li>
                     </ul>
                 </div>
             </div>
@@ -27,13 +27,14 @@
                         <div class="search-product">
                             <form action="#" method="post">
                                 {% csrf_token %}
-                                <input class="form-control" name="find_product" placeholder="Search here..." type="text">
+                                <input class="form-control" name="find_product" placeholder="Я ищу..."
+                                       type="text">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
                         <div class="filter-sidebar-left">
                             <div class="title-left">
-                                <h3>Categories</h3>
+                                <h3>Категории</h3>
                             </div>
                             <div class="list-group list-group-collapse list-group-sm list-group-tree"
                                  id="list-group-men" data-children=".sub-men">
@@ -57,30 +58,16 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <div class="filter-price-left">
-                            <div class="title-left">
-                                <h3>Price</h3>
-                            </div>
-                            <div class="price-box-slider">
-                                <div id="slider-range"></div>
-                                <p>
-                                    <input type="text" id="amount" readonly
-                                           style="border:0; color:#fbb714; font-weight:bold;">
-                                    <button class="btn hvr-hover" type="submit">Filter</button>
-                                </p>
-                            </div>
-                        </div>
                         <div class="filter-brand-left">
                             <div class="title-left">
-                                <h3>Brand</h3>
+                                <h3>Доступные бренды</h3>
                             </div>
                             <div class="brand-box">
                                 <ul>
                                     {% for b in brand %}
                                         <li>
                                             <div class="radio radio-danger">
-                                                <input name="survey" id="Radios1" value="Yes" type="radio">
-                                                <label for="Radios1"> {{ b.title }}</label>
+                                                <a href='{% url "shop1" b.title %}'> {{ b.title }}</a>
                                             </div>
                                         </li>
                                     {% endfor %}
@@ -96,17 +83,13 @@
                         <div class="product-item-filter row">
                             <div class="col-12 col-sm-8 text-center text-sm-left">
                                 <div class="toolbar-sorter-right">
-                                    <span>Sort by </span>
+                                    <span>Сорт-ка</span>
                                     <select id="basic" class="selectpicker show-tick form-control"
                                             data-placeholder="$ USD">
-                                        <option data-display="Select">Nothing</option>
-                                        <option value="1">Popularity</option>
-                                        <option value="2">High Price → High Price</option>
-                                        <option value="3">Low Price → High Price</option>
-                                        <option value="4">Best Selling</option>
+                                        <option data-display="Select">{{ sort }}</option>
                                     </select>
                                 </div>
-                                <p>Showing all 4 results</p>
+                                <p>Показаны все {{ count }} результата</p>
                             </div>
                             <div class="col-12 col-sm-4 text-center text-sm-right">
                                 <ul class="nav nav-tabs ml-auto">
@@ -132,11 +115,11 @@
                                                     <div class="box-img-hover">
                                                         <div class="type-lb">
                                                             {% if p.status == 'new' %}
-                                                                <p class="new">New</p>
+                                                                <p class="new">Новинка</p>
                                                             {% elif p.status == 'sale' %}
-                                                                <p class="sale">Sale</p>
+                                                                <p class="sale">Скидка</p>
                                                             {% elif p.status == 'popular' %}
-                                                                <p class="sale">Popular</p>
+                                                                <p class="sale">Популярный</p>
                                                             {% endif %}
 
                                                         </div>
@@ -146,25 +129,27 @@
                                                             <ul>
                                                                 <li><a href="{% url 'shop_detail' p.pk %}"
                                                                        data-toggle="tooltip" data-placement="right"
-                                                                       title="View"><i class="fas fa-eye"></i></a></li>
+                                                                       title="View"><i
+                                                                        class="fas fa-eye"></i></a></li>
                                                                 <li><a href="#" data-toggle="tooltip"
-                                                                       data-placement="right"
-                                                                       title="Compare"><i
-                                                                        class="fas fa-sync-alt"></i></a>
-                                                                </li>
+                                                                       data-placement="right" title="Обновить"><i
+                                                                        class="fas fa-sync-alt"></i></a></li>
                                                                 <li><a href="{% url 'wish_add' p.pk %}"
                                                                        data-toggle="tooltip" data-placement="right"
-                                                                       title="Add to Wishlist"><i
-                                                                        class="far fa-heart"></i></a>
-                                                                </li>
+                                                                       title="Добавить в избранные"><i
+                                                                        class="far fa-heart"></i></a></li>
                                                             </ul>
-                                                            <a class="cart" href="{% url 'cart_add' p.pk %}">Add to
-                                                                Cart</a>
+                                                            <a class="cart" href="{% url 'cart_add' p.pk %}">Добавить
+                                                                в корзину</a>
                                                         </div>
                                                     </div>
                                                     <div class="why-text">
                                                         <h4>{{ p.title }}</h4>
-                                                        <h5> {{ p.old_price }}</h5>
+                                                        {% if p.status == 'sale' %}
+                                                            <h5> Цена:{{ p.new_price }} {{ p.cur }}</h5>
+                                                        {% else %}
+                                                            <h5> Цена:{{ p.old_price }}{{ p.cur }}</h5>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,11 +166,11 @@
                                                         <div class="box-img-hover">
                                                             <div class="type-lb">
                                                                 {% if pr.status == 'new' %}
-                                                                    <p class="new">New</p>
+                                                                    <p class="new">Новинка</p>
                                                                 {% elif pr.status == 'sale' %}
-                                                                    <p class="sale">Sale</p>
+                                                                    <p class="sale">Скидка</p>
                                                                 {% elif pr.status == 'popular' %}
-                                                                    <p class="sale">Popular</p>
+                                                                    <p class="sale">Популярный</p>
                                                                 {% endif %}
                                                             </div>
                                                             <img src="{{ pr.image_main.url }}"
@@ -194,15 +179,15 @@
                                                                 <ul>
                                                                     <li><a href="{% url 'shop_detail' pr.pk %}"
                                                                            data-toggle="tooltip"
-                                                                           data-placement="right" title="View"><i
+                                                                           data-placement="right" title="Посмотреть"><i
                                                                             class="fas fa-eye"></i></a></li>
                                                                     <li><a href="#" data-toggle="tooltip"
-                                                                           data-placement="right" title="Compare"><i
+                                                                           data-placement="right" title="Обновить"><i
                                                                             class="fas fa-sync-alt"></i></a></li>
                                                                     <li><a href="{% url 'wish_add' pr.pk %}"
                                                                            data-toggle="tooltip"
                                                                            data-placement="right"
-                                                                           title="Add to Wishlist"><i
+                                                                           title="Добавить в избранные"><i
                                                                             class="far fa-heart"></i></a></li>
                                                                 </ul>
 
@@ -215,15 +200,15 @@
                                                         <h4>{{ pr.title }}</h4>
                                                         <h5>
                                                             {% if pr.status == 'sale' %}
-                                                                <del>$ {{ pr.old_price }}</del>
-                                                                ${{ pr.new_price }}
+                                                                <del>Цена:{{ pr.old_price }} {{ pr.cur }}</del>
+                                                                {{ pr.new_price }}{{ pr.cur }}
                                                             {% else %}
-                                                                ${{ pr.old_price }}
+                                                                Цена:{{ pr.old_price }}{{ pr.cur }}
                                                             {% endif %}
                                                         </h5>
                                                         <p>{{ pr.description }}</p>
-                                                        <a class="btn hvr-hover" href="{% url 'cart_add' pr.pk %}">Add
-                                                            to Cart</a>
+                                                        <a class="btn hvr-hover" href="{% url 'cart_add' pr.pk %}">Добавить
+                                                            в корзину</a>
                                                     </div>
                                                 </div>
                                             {% endfor %}

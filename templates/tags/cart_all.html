@@ -8,12 +8,16 @@
                                                                                  class="cart-thumb"
                                                                                  alt=""/></a>
                     <h6><a href="{% url 'shop_detail' cart.pk %}">{{ cart.title }} </a></h6>
-                    <p>1x - <span class="price">{{ cart.old_price }}</span></p>
+                    {% if cart.status == 'sale' %}
+                        <p>1 - <span class="price">{{ cart.new_price }}</span></p>
+                    {% else %}
+                        <p>1 - <span class="price">{{ cart.old_price }}</span></p>
+                    {% endif %}
                 </li>
             {% endfor %}
             <li class="total">
-                <a href="{% url 'cart' %}" class="btn btn-default hvr-hover btn-cart">VIEW CART</a>
-                <span class="float-right"><strong>Total</strong>: ${{ summa_carts }}</span>
+                <a href="{% url 'cart' %}" class="btn btn-default hvr-hover btn-cart">Посмотреть корзину</a>
+                <span class="float-right"><strong>Итог</strong>: ${{ summa_carts }}</span>
             </li>
         </ul>
     </li>

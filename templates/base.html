@@ -60,13 +60,6 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <div class="custom-select-box">
-                    <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
-                        <option>¥ JPY</option>
-                        <option>$ USD</option>
-                        <option>€ EUR</option>
-                    </select>
-                </div>
                 <div class="right-phone-box">
                     {% for add in address %}
 
@@ -75,11 +68,11 @@
                 </div>
                 <div class="our-link">
                     <ul>
-                        <li><a href="{% url 'account' %}">My Account</a></li>
+                        <li><a href="{% url 'account' %}">Мой кабинет</a></li>
                         <li>
-                            <a href="https://www.google.com/maps/place/Silk+road+Lodge/@42.8801412,74.5940494,3a,75y,90t/data=!3m8!1e2!3m6!1shttps:%2F%2Fcdn.ostrovok.ru%2Ft%2F1024x768%2Fextranet%2Fmedia%2F6daebca4679641bcb17d85af859de220.JPG!2e7!3e27!6s%2F%2Flh6.googleusercontent.com%2Fproxy%2FBPjnD3ogM4YdwePZUbgs_o-wpFavg0CXiroF2HpsQ9Y04bHVCAXTjpRtN41fwgX8Tu11SWGTykRFPU_g-d7SBSolw_HZuT5iIdcVZ_JrBoAK5HivYSfltPJcok8ZcJwSESbbnIA_rgCYU-JclygdrJvYMp1Y5MY%3Dw203-h152-k-no!7i1024!8i768!4m8!3m7!1s0x389eb7e1cd3ce999:0xd2f0edec6dc7edef!5m2!4m1!1i2!8m2!3d42.8803005!4d74.5940618">Our
-                                location</a></li>
-                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                            <a href="https://www.google.com/maps/place/Silk+road+Lodge/@42.8801412,74.5940494,3a,75y,90t/data=!3m8!1e2!3m6!1shttps:%2F%2Fcdn.ostrovok.ru%2Ft%2F1024x768%2Fextranet%2Fmedia%2F6daebca4679641bcb17d85af859de220.JPG!2e7!3e27!6s%2F%2Flh6.googleusercontent.com%2Fproxy%2FBPjnD3ogM4YdwePZUbgs_o-wpFavg0CXiroF2HpsQ9Y04bHVCAXTjpRtN41fwgX8Tu11SWGTykRFPU_g-d7SBSolw_HZuT5iIdcVZ_JrBoAK5HivYSfltPJcok8ZcJwSESbbnIA_rgCYU-JclygdrJvYMp1Y5MY%3Dw203-h152-k-no!7i1024!8i768!4m8!3m7!1s0x389eb7e1cd3ce999:0xd2f0edec6dc7edef!5m2!4m1!1i2!8m2!3d42.8803005!4d74.5940618">Наша
+                                местоположения</a></li>
+                        <li><a href="{% url 'contact' %}">Контакты</a></li>
                     </ul>
                 </div>
             </div>
@@ -101,7 +94,7 @@
                 </button>
                 <a class="navbar-brand logo-nurs"
                    href="{% url 'home' %}">
-                    🛒// BY NURS
+                    <img src="{% static 'images/logo123.png' %}" alt="">
                 </a>
             </div>
             <!-- End Header Navigation -->
@@ -109,10 +102,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                    <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">О нас</a></li>
                     <li class="dropdown megamenu-fw">
-                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Product</a>
+                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Товары</a>
                         <ul class="dropdown-menu megamenu-content" role="menu">
                             <li>
                                 <div class="row">
@@ -134,17 +127,16 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">SHOP</a>
+                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Каталог</a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'cart' %}">Cart</a></li>
-                            <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                            <li><a href="{% url 'account' %}">My Account</a></li>
-                            <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
-                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                            <li><a href="{% url 'cart' %}">Корзина</a></li>
+                            <li><a href="{% url 'account' %}">Мой кабинет</a></li>
+                            <li><a href="{% url 'wishlist' %}">Избранные</a></li>
+                            <li><a href="{% url 'blog' %}">Блог</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'service' %}">Our Service</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'service' %}">Сервис</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Контакт</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -152,7 +144,6 @@
             <!-- Start Atribute Navigation -->
             <div class="attr-nav">
                 <ul>
-                    <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                     <li class="side-menu"><a href="#">
                         <i class="fa fa-shopping-bag"></i>
                         {% if user.is_authenticated %}
@@ -166,19 +157,19 @@
             <!-- End Atribute Navigation -->
             {% if not user.is_authenticated %}
                 <ul class="nav">
-                    <li class="nav-item"><a href="{% url 'my_login' %}" class="nav-link link-dark px-2">Login</a></li>
-                    <li class="nav-item"><a href="{% url 'my_register' %}" class="nav-link link-dark px-2">Sign up</a>
+                    <li class="nav-item"><a href="{% url 'my_login' %}" class="nav-link link-dark px-2">Войти</a></li>
+                    <li class="nav-item"><a href="{% url 'my_register' %}" style="color: #d4062b" class="nav-link link-dark px-2">Регистрация</a>
                     </li>
                 </ul>
             {% else %}
                 <a href="{% url 'my_login' %}"
                    style="display: flex;align-items: center;color: black;text-decoration: none;margin-left: 16px;font-weight: bold;">
                     {{ user.username }}
-                    <div style="width: 25px; height: 25px;border-radius: 50%;overflow: hidden;margin-left: 12px;">
-                        <img style="width: 100%;height: 100%;object-fit: cover"
-                             src="{% static 'images/photo.jpg' %}"
-                             alt="">
-                    </div>
+                </a>
+                <a href="{% url 'account' %}" style="width: 25px; height: 25px;border-radius: 50%;overflow: hidden;margin-left: 12px;">
+                    <img style="width: 100%;height: 100%;object-fit: cover"
+                         src="{% photo_user user.username %}"
+                         alt="">
                 </a>
             {% endif %}
         </div>
@@ -193,17 +184,7 @@
 <!-- End Main Top -->
 
 <!-- Start Top Search -->
-<div class="top-search">
-    <div class="container">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <form action="" method="post">
-                <input type="text" name="main_search" class="form-control" placeholder="Search">
-                <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
-            </form>
-        </div>
-    </div>
-</div>
+
 <!-- End Top Search -->
 
 
@@ -237,32 +218,33 @@
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="footer-widget">
-                        <h4>About ThewayShop</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.
+                        <h4>О компании "By Nurs"</h4>
+                        <p>ByNurs — это онлайн магазин для покупки по подписке с самой большой выбором на супер
+                            цене. Мы помогаем миллионам людей , покупать новые вещи и находить свой стиль по
+                            интересам, и активно развиваемся как продукт и как бизнес, не в последнюю очередь на
+                            международных рынках.
+
+                            А ещё это классная команда профессионалов, любящих свое дело. Присоединяйтесь к нам!
                         </p>
                         <ul>
-                            <li><a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.facebook.com/"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="https://twitter.com/"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.instagram.com/"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.google.com/"><i class="fab fa-google-plus" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.whatsapp.com/"><i class="fab fa-whatsapp" aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="footer-link">
-                        <h4>Information</h4>
+                        <h4>Информация</h4>
                         <ul>
-                            <li><a href="{% url 'about' %}">About Us</a></li>
-                            <li><a href="{% url 'service' %}">Customer Service</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
-                            <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Delivery Information</a></li>
+                            <li><a href="{% url 'home' %}">Главная</a></li>
+                            <li><a href="{% url 'about' %}">О компании</a></li>
+                            <li><a href="{% url 'service' %}">Наш сервис</a></li>
+                            <li><a href="{% url 'contact' %}">Контакт</a></li>
+                            <li><a href="{% url 'blog' %}">Полезные</a></li>
+                            <li><a href="{% url 'blog' %}">Новости</a></li>
                         </ul>
                     </div>
                 </div>
@@ -293,10 +275,19 @@
 
 <style>
     .logo-nurs {
-        font-weight: bold;
-        font-size: 36px;
-        font-style: italic;
-        color: #d33b33 !important;
+        width: 240px;
+        height: 140px;
+        overflow: hidden;
+    }
+
+    .logo-nurs img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .container-fluid {
+        margin-top: 0;
     }
 </style>
 
